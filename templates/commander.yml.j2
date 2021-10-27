@@ -1,0 +1,71 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: commander
+  labels:
+    app: commander
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: commander
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: commander
+  labels:
+    app: commander
+spec:
+  replicas: {{ commander_replicas }}
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: commander
+  template:
+    metadata:
+      labels:
+        app: commander
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: commander
+          image: "{{ commander_image }}"
+          imagePullPolicy: "{{ image_pull_policy }}"
+          env:
+            - name: DEPLOY_TIME
+              value: "{{ commander_time }}"
+            - name: REACT_APP_ECHO
+              value: "{{ commander_echo }}"
+            - name: REACT_APP_AUTH_ENDPOINT
+              value: "{{ auth_endpoint }}"
+            - name: REACT_APP_CHAT_ENDPOINT
+              value: "{{ chat_endpoint }}"
+            - name: REACT_APP_LOCATE_ENDPOINT
+              value: "{{ locate_endpoint }}"
+            - name: REACT_APP_MQTT_URL
+              value: "{{ ws_endpoint }}"
+            - name: REACT_APP_PROVIDER
+              value: "{{ auth_provider }}"
+            - name: REACT_APP_SCOPE
+              value: "{{ auth_scope }}"
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+            requests:
+              cpu: "10m"
+              memory: "32Mi"

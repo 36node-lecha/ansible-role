@@ -1,0 +1,57 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openapi
+  labels:
+    app: openapi
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: openapi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openapi
+  labels:
+    app: openapi
+spec:
+  replicas: {{ openapi_replicas }}
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: openapi
+  template:
+    metadata:
+      labels:
+        app: openapi
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: openapi
+          image: "{{ openapi_image }}"
+          imagePullPolicy: "{{ image_pull_policy }}"
+          env:
+            - name: DEPLOY_TIME
+              value: "{{ openapi_time }}"
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+            requests:
+              cpu: "10m"
+              memory: "32Mi"

@@ -1,0 +1,45 @@
+---
+namespace: lecha-uat
+state: present
+image_pull_policy: Always
+ingress_class: traefik
+
+stargate_namespace: lecha_uat
+domain: lecha-uat.36node.com
+
+ws_endpoint: ws://emqx.lecha-uat.36node.com:8083/mqtt
+auth_endpoint: https://api.stargate.36node.com/auth/v1
+auth_provider: 61355512e897d0001290ed96
+auth_scope: lecha_uat
+mqtt_url: mqtt://emqx
+
+locate_endpoint: http://locate.lecha-uat.36node.com/v0
+locate_time: 202109032000
+locate_replicas: 1
+locate_domain: locate.{{ domain }}
+locate_mongodb_connection: mongodb://mongodb/lecha-locate
+locate_image: registry.cn-beijing.aliyuncs.com/36node/lecha-locate:main
+
+chat_endpoint: http://chat.lecha-uat.36node.com/v0
+chat_time: 202109032000
+chat_replicas: 1
+chat_domain: chat.{{ domain }}
+chat_mongodb_connection: mongodb://mongodb/lecha-chat
+chat_image: registry.cn-beijing.aliyuncs.com/36node/lecha-chat:main
+
+map_echo: "true"
+map_time: 202109032000
+map_replicas: 1
+map_domain: map.{{ domain }}
+map_image: registry.cn-beijing.aliyuncs.com/36node/lecha-map:main
+
+commander_echo: "true"
+commander_time: 202109032000
+commander_replicas: 1
+commander_domain: commander.{{ domain }}
+commander_image: registry.cn-beijing.aliyuncs.com/36node/lecha-commander:main
+
+openapi_time: 202109032000
+openapi_replicas: 1
+openapi_domain: openapi.{{ domain }}
+openapi_image: registry.cn-beijing.aliyuncs.com/36node/lecha-openapi:main

@@ -1,0 +1,59 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lecha-ingress
+  annotations:
+    kubernetes.io/ingress.class: "{{ ingress_class }}"
+spec:
+  rules:
+    - host: "{{ map_domain }}"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: map
+                port:
+                  number: 80
+    - host: "{{ commander_domain }}"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: commander
+                port:
+                  number: 80
+    - host: "{{ openapi_domain }}"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: openapi
+                port:
+                  number: 80
+    - host: "{{ locate_domain }}"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: locate
+                port:
+                  number: 80
+    - host: "{{ chat_domain }}"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: chat
+                port:
+                  number: 80

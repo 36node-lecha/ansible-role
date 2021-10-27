@@ -1,0 +1,69 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: map
+  labels:
+    app: map
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: map
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: map
+  labels:
+    app: map
+spec:
+  replicas: {{ map_replicas }}
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: map
+  template:
+    metadata:
+      labels:
+        app: map
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: map
+          image: "{{ map_image }}"
+          imagePullPolicy: "{{ image_pull_policy }}"
+          env:
+            - name: DEPLOY_TIME
+              value: "{{ map_time }}"
+            - name: REACT_APP_ECHO
+              value: "{{ map_echo }}"
+            - name: REACT_APP_AUTH_ENDPOINT
+              value: "{{ auth_endpoint }}"
+            - name: REACT_APP_CHAT_ENDPOINT
+              value: "{{ chat_endpoint }}"
+            - name: REACT_APP_LOCATE_ENDPOINT
+              value: "{{ locate_endpoint }}"
+            - name: REACT_APP_PROVIDER
+              value: "{{ auth_provider }}"
+            - name: REACT_APP_SCOPE
+              value: "{{ auth_scope }}"
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+            requests:
+              cpu: "10m"
+              memory: "32Mi"

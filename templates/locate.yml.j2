@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: locate
+  labels:
+    app: locate
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: locate
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locate
+  labels:
+    app: locate
+spec:
+  replicas: {{ chat_replicas }}
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: locate
+  template:
+    metadata:
+      labels:
+        app: locate
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: locate
+          image: "{{ locate_image }}"
+          imagePullPolicy: "{{ image_pull_policy }}"
+          env:
+            - name: DEPLOY_TIME
+              value: "{{ locate_time }}"
+            - name: MQTT_URL
+              value: "{{ mqtt_url }}"
+            - name: MONGODB_CONNECTION
+              value: "{{ locate_mongodb_connection }}"
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+            requests:
+              cpu: "10m"
+              memory: "32Mi"

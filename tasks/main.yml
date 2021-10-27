@@ -1,0 +1,22 @@
+---
+- name: Namespace for lecha
+  community.kubernetes.k8s:
+    state: "{{ state }}"
+    name: "{{ namespace }}"
+    api_version: v1
+    kind: Namespace
+
+- name: lecha web and service
+  community.kubernetes.k8s:
+    state: "{{ state }}"
+    namespace: "{{ namespace }}"
+    template: "{{ item }}"
+  with_items:
+    - locate.yml.j2
+    - chat.yml.j2
+    - commander.yml.j2
+    - openapi.yml.j2
+    - map.yml.j2
+    - ingress.yml.j2
+  tags:
+    - lecha
