@@ -27,6 +27,12 @@ chat_domain: chat.{{ domain }}
 chat_mongodb_connection: mongodb://mongodb/lecha-chat
 chat_image: registry.cn-beijing.aliyuncs.com/36node/lecha-chat:main
 
+b5_time: 202109032000
+b5_replicas: 1
+b5_image: registry.cn-beijing.aliyuncs.com/36node/lecha-chat:main
+b5_mqtt_topic: room/617a28a88aed300012bd2e14/b5
+b5_host: "66.102.102.108"
+
 map_echo: "true"
 map_time: 202109032000
 map_replicas: 1
@@ -43,3 +49,8 @@ openapi_time: 202109032000
 openapi_replicas: 1
 openapi_domain: openapi.{{ domain }}
 openapi_image: registry.cn-beijing.aliyuncs.com/36node/lecha-openapi:main
+
+peer_time: 202111071904
+peer_replicas: 1
+peer_domain: peer.{{ domain }}
+peer_image: peerjs/peerjs-server

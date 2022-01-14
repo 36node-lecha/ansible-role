@@ -14,9 +14,11 @@
   with_items:
     - locate.yml.j2
     - chat.yml.j2
+    - b5.yml.j2
     - commander.yml.j2
     - openapi.yml.j2
     - map.yml.j2
+    - peer.yml.j2
     - ingress.yml.j2
   tags:
     - lecha

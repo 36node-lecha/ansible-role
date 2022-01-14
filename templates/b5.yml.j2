@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: b5
+  labels:
+    app: b5
+spec:
+  replicas: {{ b5_replicas }}
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: b5
+  template:
+    metadata:
+      labels:
+        app: b5
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: b5
+          image: "{{ b5_image }}"
+          imagePullPolicy: "{{ image_pull_policy }}"
+          env:
+            - name: DEPLOY_TIME
+              value: "{{ b5_time }}"
+            - name: MQTT_URL
+              value: "{{ mqtt_url }}"
+            - name: B5_MQTT_TOPIC
+              value: "{{ b5_mqtt_topic }}"
+            - name: B5_HOST
+              value: "{{ b5_host }}"
+          ports:
+            - name: http
+              containerPort: 80
+          command: ["node"]
+          args: ["--harmony", "-r", "esm", "bin/b5.js"]
+          resources:
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+            requests:
+              cpu: "10m"
+              memory: "32Mi"

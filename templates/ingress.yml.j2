@@ -57,3 +57,13 @@ spec:
                 name: chat
                 port:
                   number: 80
+    - host: "{{ peer_domain }}"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: peer
+                port:
+                  number: 9000
