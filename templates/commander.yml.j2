@@ -45,6 +45,10 @@ spec:
           env:
             - name: DEPLOY_TIME
               value: "{{ commander_time }}"
+            - name: API_PLACEHOLDER
+              value: "/vap"
+            - name: API_GATEWAY
+              value: "http://66.102.102.30:8088/vap"
             - name: REACT_APP_ECHO
               value: "{{ commander_echo }}"
             - name: REACT_APP_AUTH_ENDPOINT
