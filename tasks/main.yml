@@ -19,6 +19,7 @@
     - openapi.yml.j2
     - map.yml.j2
     - peer.yml.j2
+    # - remote.yml.j2
     - ingress.yml.j2
   tags:
     - lecha

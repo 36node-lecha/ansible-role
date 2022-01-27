@@ -1,0 +1,260 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: remote-lb
+spec:
+  type: LoadBalancer
+  ports:
+    - name: 4443-tcp
+      port: 4443
+      targetPort: 4443
+      protocol: TCP
+    - name: 2000-tcp
+      port: 2000
+      targetPort: 2000
+      protocol: TCP
+    - name: 2000-udp
+      port: 2000
+      targetPort: 2000
+      protocol: UDP
+    - name: 2001-tcp
+      port: 2001
+      targetPort: 2001
+      protocol: TCP
+    - name: 2001-udp
+      port: 2001
+      targetPort: 2001
+      protocol: UDP
+    - name: 2002-tcp
+      port: 2002
+      targetPort: 2002
+      protocol: TCP
+    - name: 2002-udp
+      port: 2002
+      targetPort: 2002
+      protocol: UDP
+    - name: 2003-tcp
+      port: 2003
+      targetPort: 2003
+      protocol: TCP
+    - name: 2003-udp
+      port: 2003
+      targetPort: 2003
+      protocol: UDP
+    - name: 2004-tcp
+      port: 2004
+      targetPort: 2004
+      protocol: TCP
+    - name: 2004-udp
+      port: 2004
+      targetPort: 2004
+      protocol: UDP
+    - name: 2005-tcp
+      port: 2005
+      targetPort: 2005
+      protocol: TCP
+    - name: 2005-udp
+      port: 2005
+      targetPort: 2005
+      protocol: UDP
+    - name: 2006-tcp
+      port: 2006
+      targetPort: 2006
+      protocol: TCP
+    - name: 2006-udp
+      port: 2006
+      targetPort: 2006
+      protocol: UDP
+    - name: 2007-tcp
+      port: 2007
+      targetPort: 2007
+      protocol: TCP
+    - name: 2007-udp
+      port: 2007
+      targetPort: 2007
+      protocol: UDP
+    - name: 2008-tcp
+      port: 2008
+      targetPort: 2008
+      protocol: TCP
+    - name: 2008-udp
+      port: 2008
+      targetPort: 2008
+      protocol: UDP
+    - name: 2009-tcp
+      port: 2009
+      targetPort: 2009
+      protocol: TCP
+    - name: 2009-udp
+      port: 2009
+      targetPort: 2009
+      protocol: UDP
+    - name: 2010-tcp
+      port: 2010
+      targetPort: 2010
+      protocol: TCP
+    - name: 2010-udp
+      port: 2010
+      targetPort: 2010
+      protocol: UDP
+    - name: 2011-tcp
+      port: 2011
+      targetPort: 2011
+      protocol: TCP
+    - name: 2011-udp
+      port: 2011
+      targetPort: 2011
+      protocol: UDP
+    - name: 2012-tcp
+      port: 2012
+      targetPort: 2012
+      protocol: TCP
+    - name: 2012-udp
+      port: 2012
+      targetPort: 2012
+      protocol: UDP
+    - name: 2013-tcp
+      port: 2013
+      targetPort: 2013
+      protocol: TCP
+    - name: 2013-udp
+      port: 2013
+      targetPort: 2013
+      protocol: UDP
+    - name: 2014-tcp
+      port: 2014
+      targetPort: 2014
+      protocol: TCP
+    - name: 2014-udp
+      port: 2014
+      targetPort: 2014
+      protocol: UDP
+    - name: 2015-tcp
+      port: 2015
+      targetPort: 2015
+      protocol: TCP
+    - name: 2015-udp
+      port: 2015
+      targetPort: 2015
+      protocol: UDP
+    - name: 2016-tcp
+      port: 2016
+      targetPort: 2016
+      protocol: TCP
+    - name: 2016-udp
+      port: 2016
+      targetPort: 2016
+      protocol: UDP
+    - name: 2017-tcp
+      port: 2017
+      targetPort: 2017
+      protocol: TCP
+    - name: 2017-udp
+      port: 2017
+      targetPort: 2017
+      protocol: UDP
+    - name: 2018-tcp
+      port: 2018
+      targetPort: 2018
+      protocol: TCP
+    - name: 2018-udp
+      port: 2018
+      targetPort: 2018
+      protocol: UDP
+    - name: 2019-tcp
+      port: 2019
+      targetPort: 2019
+      protocol: TCP
+    - name: 2019-udp
+      port: 2019
+      targetPort: 2019
+      protocol: UDP
+    - name: 2020-tcp
+      port: 2020
+      targetPort: 2020
+      protocol: TCP
+    - name: 2020-udp
+      port: 2020
+      targetPort: 2020
+      protocol: UDP
+  selector:
+    app: remote
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: remote-https
+  labels:
+    app: remote
+spec:
+  type: LoadBalancer
+  ports:
+    - name: https
+      port: 4443
+      targetPort: 4443
+  selector:
+    app: remote
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: remote
+  labels:
+    app: remote
+spec:
+  replicas: 1
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: remote
+  template:
+    metadata:
+      labels:
+        app: remote
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: remote
+          image: "{{ remote_image }}"
+          imagePullPolicy: "{{ image_pull_policy }}"
+          env:
+            - name: DEPLOY_TIME
+              value: "{{ remote_time }}"
+            - name: DEBUG
+              value: "remote:INFO* *WARN* *ERROR*"
+            - name: INTERACTIVE
+              value: "true"
+            - name: DOMAIN
+              value: "{{ remote_domain }}"
+            - name: PROTOO_LISTEN_PORT
+              value: "4443"
+            - name: HTTPS_CERT_FULLCHAIN
+              value: "/service/certs/fullchain.pem"
+            - name: HTTPS_CERT_PRIVKEY
+              value: "/service/certs/privkey.pem"
+            - name: remote_LISTEN_IP
+              value: "0.0.0.0"
+            - name: remote_MIN_PORT
+              value: "2000"
+            - name: remote_MAX_PORT
+              value: "2020"
+            - name: remote_USE_VALGRIND
+              value: "false"
+            - name: remote_VALGRIND_OPTIONS
+              value: "--leak-check=full --track-fds=yes --log-file=/storage/remote_valgrind_%p.log"
+          ports:
+            - name: http
+              containerPort: 4443
+          resources:
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+            requests:
+              cpu: "10m"
+              memory: "32Mi"

@@ -54,3 +54,8 @@ peer_time: 202111071904
 peer_replicas: 1
 peer_domain: peer.{{ domain }}
 peer_image: peerjs/peerjs-server
+
+remote_time: 202201181147
+remote_domain: remote.{{ domain }}
+remote_version: main
+remote_image: registry.cn-beijing.aliyuncs.com/36node/lecha-remote-interrogate:{{ remote_version }}
