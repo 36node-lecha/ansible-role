@@ -13,12 +13,19 @@ auth_provider: 61355512e897d0001290ed96
 auth_scope: lecha_uat
 mqtt_url: mqtt://emqx
 
+oss_endpoint: http://api.minio.36node.com
+oss_bucket: lecha-uat
+oss_url: http://api.minio.36node.com/lecha-uat
+oss_access_key: ZAXB3HD2GXMF8D4HML8P
+oss_access_secret: 5ynuP+nkDawa0uv2sHsEBhXETNtZ+9nTIyDNhvhr
+
 locate_endpoint: http://locate.lecha-uat.36node.com/v0
 locate_time: 202109032000
 locate_replicas: 1
 locate_domain: locate.{{ domain }}
 locate_mongodb_connection: mongodb://mongodb/lecha-locate
 locate_image: registry.cn-beijing.aliyuncs.com/36node/lecha-locate:main
+target_locate_ttl_on_seconds: 600
 
 chat_endpoint: http://chat.lecha-uat.36node.com/v0
 chat_time: 202109032000

@@ -22,7 +22,7 @@ metadata:
   labels:
     app: locate
 spec:
-  replicas: {{ chat_replicas }}
+  replicas: {{ locate_replicas }}
   minReadySeconds: 10
   strategy:
     type: RollingUpdate
@@ -47,8 +47,12 @@ spec:
               value: "{{ locate_time }}"
             - name: MQTT_URL
               value: "{{ mqtt_url }}"
+            - name: MQTT_URL
+              value: "{{ mqtt_url }}"
             - name: MONGODB_CONNECTION
               value: "{{ locate_mongodb_connection }}"
+            - name: TARGET_LOCATE_TTL_ON_SECONDS
+              value: "{{ target_locate_ttl_on_seconds }}"
           ports:
             - name: http
               containerPort: 80

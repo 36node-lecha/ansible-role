@@ -65,6 +65,16 @@ spec:
               value: "{{ auth_provider }}"
             - name: REACT_APP_SCOPE
               value: "{{ auth_scope }}"
+            - name: REACT_APP_OSS_ENDPOINT
+              value: "{{ oss_endpoint }}"
+            - name: REACT_APP_OSS_BUCKET
+              value: "{{ oss_bucket }}"
+            - name: REACT_APP_OSS_URL
+              value: "{{ oss_url }}"
+            - name: REACT_APP_OSS_ACCESS_KEY_ID
+              value: "{{ oss_access_key }}"
+            - name: REACT_APP_OSS_ACCESS_KEY_SECRET
+              value: "{{ oss_access_secret }}"
           ports:
             - name: http
               containerPort: 80
