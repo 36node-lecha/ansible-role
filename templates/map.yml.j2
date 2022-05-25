@@ -57,6 +57,8 @@ spec:
               value: "{{ auth_provider }}"
             - name: REACT_APP_SCOPE
               value: "{{ auth_scope }}"
+            - name: REACT_APP_MQTT_URL
+              value: "{{ ws_endpoint }}"
           ports:
             - name: http
               containerPort: 80
