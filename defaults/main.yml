@@ -57,6 +57,7 @@ openapi_replicas: 1
 openapi_domain: openapi.{{ domain }}
 openapi_image: registry.cn-beijing.aliyuncs.com/36node/lecha-openapi:main
 
+peer_endpoint: http://peer.lecha-uat.36node.com
 peer_time: 202111071904
 peer_replicas: 1
 peer_domain: peer.{{ domain }}
